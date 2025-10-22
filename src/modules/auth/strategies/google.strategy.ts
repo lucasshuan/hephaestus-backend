@@ -1,4 +1,3 @@
-// src/auth/google.strategy.ts
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile } from 'passport-google-oauth20';
 import { Injectable } from '@nestjs/common';
@@ -15,11 +14,9 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
   }
 
-  // Tipar o retorno evita "unsafe-assignment" depois
   validate(_: string, __: string, profile: Profile): GoogleOAuthUser {
     const email = profile.emails?.[0]?.value;
     if (!email) {
-      // lance erro cedo, evita acessar membros indefinidos
       throw new Error('Google profile has no email');
     }
     return {

@@ -1,4 +1,3 @@
-// auth/auth.service.ts
 import { Injectable } from '@nestjs/common';
 import { and, eq } from 'drizzle-orm';
 import { schema } from '@/database/schema';
@@ -7,15 +6,15 @@ import { randomUUID, randomBytes, createHash } from 'crypto';
 import { InjectDrizzle } from '@knaadh/nestjs-drizzle-pg';
 import { GoogleOAuthUser } from './types/google-oauth-user';
 
-function hashToken(token: string) {
-  return createHash('sha256').update(token).digest('hex');
-}
-
 @Injectable()
 export class AuthService {
   constructor(
     @InjectDrizzle() private readonly db: NodePgDatabase<typeof schema>,
   ) {}
+
+  private hashToken(token: string) {
+    return createHash('sha256').update(token).digest('hex');
+  }
 
   async findOrCreateUser(oauth: GoogleOAuthUser) {
     const acc = await this.db
@@ -65,7 +64,7 @@ export class AuthService {
     ttlSeconds?: number;
   }) {
     const token = randomBytes(48).toString('base64url');
-    const tokenHash = hashToken(token);
+    const tokenHash = this.hashToken(token);
     const expires = new Date(
       Date.now() + (params.ttlSeconds ?? 15 * 24 * 60 * 60) * 1000,
     );
@@ -83,7 +82,7 @@ export class AuthService {
   }
 
   async validateSession(rawToken: string) {
-    const tokenHash = hashToken(rawToken);
+    const tokenHash = this.hashToken(rawToken);
     const [session] = await this.db
       .select()
       .from(schema.sessions)
@@ -103,7 +102,7 @@ export class AuthService {
   }
 
   async revokeSession(rawToken: string) {
-    const tokenHash = hashToken(rawToken);
+    const tokenHash = this.hashToken(rawToken);
     await this.db
       .delete(schema.sessions)
       .where(eq(schema.sessions.token, tokenHash));

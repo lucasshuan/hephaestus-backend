@@ -1,4 +1,3 @@
-// src/auth/auth.controller.ts
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import type { Request, Response } from 'express';

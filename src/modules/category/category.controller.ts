@@ -37,10 +37,10 @@ export class CategoryController {
   }
 
   @ApiOperation({
-    summary: 'Update brand',
-    description: 'Update a brand by id',
+    summary: 'Update category',
+    description: 'Update a category by id',
   })
-  @ApiParam({ name: 'id', type: String, description: 'Brand id' })
+  @ApiParam({ name: 'id', type: String, description: 'Category id' })
   @Put(':id')
   @UseGuards(SessionGuard)
   async update(

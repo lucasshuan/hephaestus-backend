@@ -22,7 +22,7 @@ export class AuthController {
 
   @ApiCookieAuth('session')
   @ApiOperation({
-    summary: 'Get me',
+    summary: 'Logged user',
     description: 'Get current logged in user.',
   })
   @Get('me')

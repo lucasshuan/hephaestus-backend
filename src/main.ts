@@ -31,16 +31,18 @@ async function bootstrap() {
     credentials: true,
   });
 
-  const config = new DocumentBuilder()
-    .setTitle('Hephaestus API')
-    .setDescription('Hardware listings')
-    .setVersion('1.0')
-    .addCookieAuth('session')
-    .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, documentFactory, {
-    swaggerOptions: { persistAuthorization: true },
-  });
+  if (process.env.NODE_ENV === 'dev') {
+    const config = new DocumentBuilder()
+      .setTitle('Hephaestus API')
+      .setDescription('Hardware listings')
+      .setVersion('1.0')
+      .addCookieAuth('session')
+      .build();
+    const documentFactory = () => SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('docs', app, documentFactory, {
+      swaggerOptions: { persistAuthorization: true },
+    });
+  }
 
   const port = Number(process.env.PORT) || 3001;
   await app.listen(port, '0.0.0.0');

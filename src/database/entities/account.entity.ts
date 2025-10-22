@@ -19,7 +19,7 @@ export const accounts = pgTable('accounts', {
   updatedAt: timestamp('updated_at')
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
-});
+}).enableRLS();
 
 export type Account = typeof accounts.$inferSelect;
 export type NewAccount = typeof accounts.$inferInsert;

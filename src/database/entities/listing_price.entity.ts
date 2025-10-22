@@ -25,7 +25,7 @@ export const listingPrices = pgTable(
       foreignColumns: [listings.id],
     }).onDelete('cascade'),
   ],
-);
+).enableRLS();
 
 export type ListingPrice = typeof listingPrices.$inferSelect;
 export type NewListingPrice = typeof listingPrices.$inferInsert;

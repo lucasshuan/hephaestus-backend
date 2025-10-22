@@ -40,7 +40,7 @@ export const listings = pgTable(
       foreignColumns: [sources.id],
     }).onDelete('cascade'),
   ],
-);
+).enableRLS();
 
 export type Listing = typeof listings.$inferSelect;
 export type NewListing = typeof listings.$inferInsert;

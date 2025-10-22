@@ -19,7 +19,7 @@ export const brands = pgTable(
       .notNull(),
   },
   (t) => [uniqueIndex('uq_brand_name').on(t.name)],
-);
+).enableRLS();
 
 export type Brand = typeof brands.$inferSelect;
 export type NewBrand = typeof brands.$inferInsert;

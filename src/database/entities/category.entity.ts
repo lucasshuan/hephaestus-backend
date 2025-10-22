@@ -26,7 +26,7 @@ export const categories = pgTable(
       foreignColumns: [t.id],
     }).onDelete('set null'),
   ],
-);
+).enableRLS();
 
 export type Category = typeof categories.$inferSelect;
 export type NewCategory = typeof categories.$inferInsert;

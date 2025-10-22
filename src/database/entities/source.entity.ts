@@ -19,7 +19,7 @@ export const sources = pgTable(
     updatedAt: timestamp('updated_at').$onUpdate(() => new Date()),
   },
   (t) => [uniqueIndex('uq_source_name').on(t.name)],
-);
+).enableRLS();
 
 export type Source = typeof sources.$inferSelect;
 export type NewSource = typeof sources.$inferInsert;

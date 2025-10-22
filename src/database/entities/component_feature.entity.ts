@@ -22,7 +22,7 @@ export const componentFeatures = pgTable(
       foreignColumns: [features.id],
     }).onDelete('cascade'),
   ],
-);
+).enableRLS();
 
 export type ComponentFeature = typeof componentFeatures.$inferSelect;
 export type NewComponentFeature = typeof componentFeatures.$inferInsert;

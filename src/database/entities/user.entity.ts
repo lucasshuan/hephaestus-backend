@@ -13,7 +13,7 @@ export const users = pgTable('user', {
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
-});
+}).enableRLS();
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;

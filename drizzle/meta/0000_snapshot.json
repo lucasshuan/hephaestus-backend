@@ -1,11 +1,11 @@
 {
-  "id": "0cb63a9b-68a1-4670-81cd-20c286c8de93",
+  "id": "81f11015-55d7-4648-8fcb-7da2a2c95861",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.account": {
-      "name": "account",
+    "public.accounts": {
+      "name": "accounts",
       "schema": "",
       "columns": {
         "id": {
@@ -90,9 +90,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "account_user_id_user_id_fk": {
-          "name": "account_user_id_user_id_fk",
-          "tableFrom": "account",
+        "accounts_user_id_user_id_fk": {
+          "name": "accounts_user_id_user_id_fk",
+          "tableFrom": "accounts",
           "tableTo": "user",
           "columnsFrom": [
             "user_id"
@@ -110,8 +110,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.brand": {
-      "name": "brand",
+    "public.brands": {
+      "name": "brands",
       "schema": "",
       "columns": {
         "id": {
@@ -164,8 +164,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.category": {
-      "name": "category",
+    "public.categories": {
+      "name": "categories",
       "schema": "",
       "columns": {
         "id": {
@@ -220,8 +220,8 @@
       "foreignKeys": {
         "fk_category_parent": {
           "name": "fk_category_parent",
-          "tableFrom": "category",
-          "tableTo": "category",
+          "tableFrom": "categories",
+          "tableTo": "categories",
           "columnsFrom": [
             "parent_category_id"
           ],
@@ -274,7 +274,7 @@
         },
         "tier": {
           "name": "tier",
-          "type": "component_tier",
+          "type": "component_tiers",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
@@ -345,7 +345,7 @@
         "fk_component_brand": {
           "name": "fk_component_brand",
           "tableFrom": "component",
-          "tableTo": "brand",
+          "tableTo": "brands",
           "columnsFrom": [
             "brand_id"
           ],
@@ -358,7 +358,7 @@
         "fk_component_category": {
           "name": "fk_component_category",
           "tableFrom": "component",
-          "tableTo": "category",
+          "tableTo": "categories",
           "columnsFrom": [
             "category_id"
           ],
@@ -375,8 +375,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.component_feature": {
-      "name": "component_feature",
+    "public.component_features": {
+      "name": "component_features",
       "schema": "",
       "columns": {
         "component_id": {
@@ -424,7 +424,7 @@
       "foreignKeys": {
         "fk_component_feature_component": {
           "name": "fk_component_feature_component",
-          "tableFrom": "component_feature",
+          "tableFrom": "component_features",
           "tableTo": "component",
           "columnsFrom": [
             "component_id"
@@ -437,8 +437,8 @@
         },
         "fk_component_feature_feature": {
           "name": "fk_component_feature_feature",
-          "tableFrom": "component_feature",
-          "tableTo": "feature",
+          "tableFrom": "component_features",
+          "tableTo": "features",
           "columnsFrom": [
             "feature_id"
           ],
@@ -455,8 +455,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.feature": {
-      "name": "feature",
+    "public.features": {
+      "name": "features",
       "schema": "",
       "columns": {
         "id": {
@@ -523,8 +523,8 @@
       "foreignKeys": {
         "fk_feature_category": {
           "name": "fk_feature_category",
-          "tableFrom": "feature",
-          "tableTo": "category",
+          "tableFrom": "features",
+          "tableTo": "categories",
           "columnsFrom": [
             "category_id"
           ],
@@ -541,8 +541,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.listing": {
-      "name": "listing",
+    "public.listings": {
+      "name": "listings",
       "schema": "",
       "columns": {
         "id": {
@@ -653,7 +653,7 @@
       "foreignKeys": {
         "fk_listing_component": {
           "name": "fk_listing_component",
-          "tableFrom": "listing",
+          "tableFrom": "listings",
           "tableTo": "component",
           "columnsFrom": [
             "component_id"
@@ -666,7 +666,7 @@
         },
         "fk_listing_source": {
           "name": "fk_listing_source",
-          "tableFrom": "listing",
+          "tableFrom": "listings",
           "tableTo": "source",
           "columnsFrom": [
             "source_id"
@@ -684,8 +684,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.listing_price": {
-      "name": "listing_price",
+    "public.listing_prices": {
+      "name": "listing_prices",
       "schema": "",
       "columns": {
         "id": {
@@ -724,8 +724,8 @@
       "foreignKeys": {
         "fk_listing_price_listing": {
           "name": "fk_listing_price_listing",
-          "tableFrom": "listing_price",
-          "tableTo": "listing",
+          "tableFrom": "listing_prices",
+          "tableTo": "listings",
           "columnsFrom": [
             "listing_id"
           ],
@@ -929,7 +929,7 @@
         },
         "role": {
           "name": "role",
-          "type": "user_role",
+          "type": "user_roles",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
@@ -966,8 +966,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.verification": {
-      "name": "verification",
+    "public.verifications": {
+      "name": "verifications",
       "schema": "",
       "columns": {
         "id": {
@@ -1019,8 +1019,8 @@
     }
   },
   "enums": {
-    "public.component_tier": {
-      "name": "component_tier",
+    "public.component_tiers": {
+      "name": "component_tiers",
       "schema": "public",
       "values": [
         "entry",
@@ -1029,8 +1029,8 @@
         "enthusiast"
       ]
     },
-    "public.user_role": {
-      "name": "user_role",
+    "public.user_roles": {
+      "name": "user_roles",
       "schema": "public",
       "values": [
         "user",

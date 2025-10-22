@@ -40,7 +40,7 @@ export const components = pgTable(
       foreignColumns: [categories.id],
     }).onDelete('set null'),
   ],
-);
+).enableRLS();
 
 export type Component = typeof components.$inferSelect;
 export type NewComponent = typeof components.$inferInsert;

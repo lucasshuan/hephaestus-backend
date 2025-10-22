@@ -1,6 +1,6 @@
-CREATE TYPE "public"."component_tier" AS ENUM('entry', 'mid', 'high', 'enthusiast');--> statement-breakpoint
-CREATE TYPE "public"."user_role" AS ENUM('user', 'admin');--> statement-breakpoint
-CREATE TABLE "account" (
+CREATE TYPE "public"."component_tiers" AS ENUM('entry', 'mid', 'high', 'enthusiast');--> statement-breakpoint
+CREATE TYPE "public"."user_roles" AS ENUM('user', 'admin');--> statement-breakpoint
+CREATE TABLE "accounts" (
 	"id" text PRIMARY KEY NOT NULL,
 	"account_id" text NOT NULL,
 	"provider_id" text NOT NULL,
@@ -16,14 +16,14 @@ CREATE TABLE "account" (
 	"updated_at" timestamp NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "brand" (
+CREATE TABLE "brands" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" varchar(120) NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "category" (
+CREATE TABLE "categories" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" varchar(120) NOT NULL,
 	"parent_category_id" text,
@@ -37,18 +37,18 @@ CREATE TABLE "component" (
 	"brand_id" text,
 	"category_id" text,
 	"model" varchar(120),
-	"tier" "component_tier" DEFAULT 'entry' NOT NULL,
+	"tier" "component_tiers" DEFAULT 'entry' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp
 );
 --> statement-breakpoint
-CREATE TABLE "component_feature" (
+CREATE TABLE "component_features" (
 	"component_id" text NOT NULL,
 	"feature_id" text NOT NULL,
 	"value_text" text NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "feature" (
+CREATE TABLE "features" (
 	"id" text PRIMARY KEY NOT NULL,
 	"category_id" text NOT NULL,
 	"name" varchar(120) NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE "feature" (
 	"updated_at" timestamp
 );
 --> statement-breakpoint
-CREATE TABLE "listing" (
+CREATE TABLE "listings" (
 	"id" text PRIMARY KEY NOT NULL,
 	"component_id" text NOT NULL,
 	"source_id" text NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE "listing" (
 	"updated_at" timestamp
 );
 --> statement-breakpoint
-CREATE TABLE "listing_price" (
+CREATE TABLE "listing_prices" (
 	"id" text PRIMARY KEY NOT NULL,
 	"listing_id" text NOT NULL,
 	"price" numeric(12, 2) NOT NULL,
@@ -103,13 +103,13 @@ CREATE TABLE "user" (
 	"email" text NOT NULL,
 	"email_verified" boolean DEFAULT false NOT NULL,
 	"image" text,
-	"role" "user_role" DEFAULT 'user' NOT NULL,
+	"role" "user_roles" DEFAULT 'user' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "user_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
-CREATE TABLE "verification" (
+CREATE TABLE "verifications" (
 	"id" text PRIMARY KEY NOT NULL,
 	"identifier" text NOT NULL,
 	"value" text NOT NULL,
@@ -118,25 +118,25 @@ CREATE TABLE "verification" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "category" ADD CONSTRAINT "fk_category_parent" FOREIGN KEY ("parent_category_id") REFERENCES "public"."category"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "component" ADD CONSTRAINT "fk_component_brand" FOREIGN KEY ("brand_id") REFERENCES "public"."brand"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "component" ADD CONSTRAINT "fk_component_category" FOREIGN KEY ("category_id") REFERENCES "public"."category"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "component_feature" ADD CONSTRAINT "fk_component_feature_component" FOREIGN KEY ("component_id") REFERENCES "public"."component"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "component_feature" ADD CONSTRAINT "fk_component_feature_feature" FOREIGN KEY ("feature_id") REFERENCES "public"."feature"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "feature" ADD CONSTRAINT "fk_feature_category" FOREIGN KEY ("category_id") REFERENCES "public"."category"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "listing" ADD CONSTRAINT "fk_listing_component" FOREIGN KEY ("component_id") REFERENCES "public"."component"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "listing" ADD CONSTRAINT "fk_listing_source" FOREIGN KEY ("source_id") REFERENCES "public"."source"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "listing_price" ADD CONSTRAINT "fk_listing_price_listing" FOREIGN KEY ("listing_id") REFERENCES "public"."listing"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "categories" ADD CONSTRAINT "fk_category_parent" FOREIGN KEY ("parent_category_id") REFERENCES "public"."categories"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "component" ADD CONSTRAINT "fk_component_brand" FOREIGN KEY ("brand_id") REFERENCES "public"."brands"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "component" ADD CONSTRAINT "fk_component_category" FOREIGN KEY ("category_id") REFERENCES "public"."categories"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "component_features" ADD CONSTRAINT "fk_component_feature_component" FOREIGN KEY ("component_id") REFERENCES "public"."component"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "component_features" ADD CONSTRAINT "fk_component_feature_feature" FOREIGN KEY ("feature_id") REFERENCES "public"."features"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "features" ADD CONSTRAINT "fk_feature_category" FOREIGN KEY ("category_id") REFERENCES "public"."categories"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "listings" ADD CONSTRAINT "fk_listing_component" FOREIGN KEY ("component_id") REFERENCES "public"."component"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "listings" ADD CONSTRAINT "fk_listing_source" FOREIGN KEY ("source_id") REFERENCES "public"."source"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "listing_prices" ADD CONSTRAINT "fk_listing_price_listing" FOREIGN KEY ("listing_id") REFERENCES "public"."listings"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-CREATE UNIQUE INDEX "uq_brand_name" ON "brand" USING btree ("name");--> statement-breakpoint
-CREATE UNIQUE INDEX "uq_category_name" ON "category" USING btree ("name");--> statement-breakpoint
+CREATE UNIQUE INDEX "uq_brand_name" ON "brands" USING btree ("name");--> statement-breakpoint
+CREATE UNIQUE INDEX "uq_category_name" ON "categories" USING btree ("name");--> statement-breakpoint
 CREATE UNIQUE INDEX "uq_component_name" ON "component" USING btree ("name");--> statement-breakpoint
 CREATE INDEX "idx_component_brand" ON "component" USING btree ("brand_id");--> statement-breakpoint
 CREATE INDEX "idx_component_category" ON "component" USING btree ("category_id");--> statement-breakpoint
-CREATE UNIQUE INDEX "uq_comp_feature" ON "component_feature" USING btree ("component_id","feature_id");--> statement-breakpoint
-CREATE UNIQUE INDEX "uq_feature_cat_key" ON "feature" USING btree ("category_id","key");--> statement-breakpoint
-CREATE UNIQUE INDEX "uq_listing_source_component" ON "listing" USING btree ("source_id","component_id");--> statement-breakpoint
-CREATE INDEX "idx_listing_component" ON "listing" USING btree ("component_id");--> statement-breakpoint
-CREATE INDEX "idx_listing_source" ON "listing" USING btree ("source_id");--> statement-breakpoint
+CREATE UNIQUE INDEX "uq_comp_feature" ON "component_features" USING btree ("component_id","feature_id");--> statement-breakpoint
+CREATE UNIQUE INDEX "uq_feature_cat_key" ON "features" USING btree ("category_id","key");--> statement-breakpoint
+CREATE UNIQUE INDEX "uq_listing_source_component" ON "listings" USING btree ("source_id","component_id");--> statement-breakpoint
+CREATE INDEX "idx_listing_component" ON "listings" USING btree ("component_id");--> statement-breakpoint
+CREATE INDEX "idx_listing_source" ON "listings" USING btree ("source_id");--> statement-breakpoint
 CREATE UNIQUE INDEX "uq_source_name" ON "source" USING btree ("name");

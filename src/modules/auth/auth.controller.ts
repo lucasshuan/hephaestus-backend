@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import type { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import type { GoogleOAuthUser } from './types/google-oauth-user';
 import { SessionGuard } from './guards/session.guard';
 import { ApiCookieAuth, ApiOperation } from '@nestjs/swagger';
+import type { FastifyRequest, FastifyReply } from 'fastify';
 
 @Controller('auth')
 export class AuthController {
@@ -27,7 +27,7 @@ export class AuthController {
   })
   @Get('me')
   @UseGuards(SessionGuard)
-  me(@Req() req: Request) {
+  me(@Req() req: FastifyRequest) {
     return req.user;
   }
 
@@ -46,9 +46,9 @@ export class AuthController {
   })
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleCallback(@Req() req: Request, @Res() res: Response) {
+  async googleCallback(@Req() req: FastifyRequest, @Res() res: FastifyReply) {
     if (!this.isGoogleOAuthUser(req.user)) {
-      return res.status(400).send('Invalid OAuth payload');
+      return res.code(400).send('Invalid OAuth payload');
     }
 
     const user = await this.auth.findOrCreateUser(req.user);
@@ -65,16 +65,16 @@ export class AuthController {
       userAgent: ua,
     });
 
-    res.cookie('session', token, {
+    res.setCookie('session', token, {
       httpOnly: true,
       secure: true,
       sameSite: 'lax',
       path: '/',
-      maxAge: Math.max(0, expires.getTime() - Date.now()),
+      maxAge: Math.max(0, Math.floor((expires.getTime() - Date.now()) / 1000)),
       domain: process.env.COOKIE_DOMAIN || undefined,
     });
 
-    res.redirect(process.env.AFTER_LOGIN_REDIRECT_URL || '/');
+    res.code(302).redirect(process.env.AFTER_LOGIN_REDIRECT_URL || '/');
   }
 
   @ApiCookieAuth('session')
@@ -83,7 +83,7 @@ export class AuthController {
     description: 'Revokes the session and clears the cookie.',
   })
   @Post('logout')
-  async logout(@Req() req: Request, @Res() res: Response) {
+  async logout(@Req() req: FastifyRequest, @Res() res: FastifyReply) {
     const token =
       req.cookies && typeof req.cookies.session === 'string'
         ? req.cookies.session
@@ -101,6 +101,6 @@ export class AuthController {
       httpOnly: true,
     });
 
-    return res.status(200).json({ success: true });
+    res.code(200).send({ success: true });
   }
 }

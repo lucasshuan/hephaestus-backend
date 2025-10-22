@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from '../auth.service';
-import type { FastifyRequest } from 'fastify';
+import type { Request } from 'express';
 
 @Injectable()
 export class SessionGuard implements CanActivate {
@@ -18,7 +18,7 @@ export class SessionGuard implements CanActivate {
   }
 
   async canActivate(ctx: ExecutionContext): Promise<boolean> {
-    const req = ctx.switchToHttp().getRequest<FastifyRequest>();
+    const req = ctx.switchToHttp().getRequest<Request>();
 
     const token = this.getSessionCookie(req.cookies);
     if (!token) {

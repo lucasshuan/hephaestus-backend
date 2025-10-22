@@ -1,7 +1,6 @@
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, Profile } from 'passport-google-oauth20';
+import { Strategy, Profile, VerifyCallback } from 'passport-google-oauth20';
 import { Injectable } from '@nestjs/common';
-import type { GoogleOAuthUser } from '../types/google-oauth-user';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -15,17 +14,23 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
   }
 
-  validate(_: string, __: string, profile: Profile): GoogleOAuthUser {
+  validate(
+    _accessToken: string,
+    _refreshToken: string,
+    profile: Profile,
+    done: VerifyCallback,
+  ) {
     const email = profile.emails?.[0]?.value;
     if (!email) {
       throw new Error('Google profile has no email');
     }
-    return {
+    const user = {
       provider: 'google',
       providerAccountId: profile.id,
       email,
       name: profile.displayName,
       image: profile.photos?.[0]?.value,
     };
+    done(null, user);
   }
 }

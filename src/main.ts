@@ -2,18 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
-import fastifyCookie from '@fastify/cookie';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-  const adapter = new FastifyAdapter({ trustProxy: true });
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    adapter,
-  );
+  const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -24,8 +16,7 @@ async function bootstrap() {
     }),
   );
 
-  await app.register(fastifyCookie, {});
-
+  app.use(cookieParser());
   app.enableCors({
     origin: ['https://hephaestus.felsen.io', 'http://localhost:3000'],
     credentials: true,
@@ -45,6 +36,6 @@ async function bootstrap() {
   }
 
   const port = Number(process.env.PORT) || 3001;
-  await app.listen(port, '0.0.0.0');
+  await app.listen(port);
 }
 void bootstrap();

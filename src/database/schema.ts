@@ -25,5 +25,3 @@ export const schema = {
   users,
   verifications,
 };
-
-export type Schema = typeof schema;

@@ -11,11 +11,11 @@ export class CategoryService {
     return await this.categoryRepository.selectAll();
   }
 
-  async create(input: CreateCategoryDto) {
-    return await this.categoryRepository.insert(input);
+  async create(categoryDto: CreateCategoryDto) {
+    return await this.categoryRepository.insert(categoryDto);
   }
 
-  async update(id: string, input: UpdateCategoryDto) {
-    return await this.categoryRepository.update(id, input);
+  async update(id: string, categoryDto: UpdateCategoryDto) {
+    return await this.categoryRepository.update(id, categoryDto);
   }
 }

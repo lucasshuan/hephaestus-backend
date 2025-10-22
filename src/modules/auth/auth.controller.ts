@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import type { GoogleOAuthUser } from './types/google-oauth-user';
 import { SessionGuard } from './guards/session.guard';
 import { ApiCookieAuth, ApiOperation } from '@nestjs/swagger';
 import type { FastifyRequest, FastifyReply } from 'fastify';
+import { GoogleAuthGuard } from './guards/google.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -22,7 +22,7 @@ export class AuthController {
 
   @ApiCookieAuth('session')
   @ApiOperation({
-    summary: 'Logged user',
+    summary: 'Current user',
     description: 'Get current logged in user.',
   })
   @Get('me')
@@ -36,7 +36,7 @@ export class AuthController {
     description: 'Redirect to Google OAuth.',
   })
   @Get('google')
-  @UseGuards(AuthGuard('google'))
+  @UseGuards(GoogleAuthGuard)
   google() {}
 
   @ApiCookieAuth('session')
@@ -45,7 +45,7 @@ export class AuthController {
     description: 'Callback for Google OAuth.',
   })
   @Get('google/callback')
-  @UseGuards(AuthGuard('google'))
+  @UseGuards(GoogleAuthGuard)
   async googleCallback(@Req() req: FastifyRequest, @Res() res: FastifyReply) {
     if (!this.isGoogleOAuthUser(req.user)) {
       return res.code(400).send('Invalid OAuth payload');

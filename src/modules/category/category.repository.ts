@@ -15,18 +15,18 @@ export class CategoryRepository {
     return await this.db.select().from(schema.categories);
   }
 
-  async insert(input: NewCategory) {
+  async insert(values: NewCategory) {
     const rows = await this.db
       .insert(schema.categories)
-      .values(input)
+      .values(values)
       .returning();
     return rows[0];
   }
 
-  async update(id: string, input: Partial<NewCategory>) {
+  async update(id: string, values: Partial<NewCategory>) {
     return this.db
       .update(schema.categories)
-      .set(input)
+      .set(values)
       .where(eq(schema.categories.id, id))
       .returning();
   }

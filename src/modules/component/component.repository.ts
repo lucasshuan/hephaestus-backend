@@ -15,18 +15,18 @@ export class ComponentRepository {
     return await this.db.select().from(schema.components);
   }
 
-  async insert(input: NewComponent) {
+  async insert(values: NewComponent) {
     const rows = await this.db
       .insert(schema.components)
-      .values(input)
+      .values(values)
       .returning();
     return rows[0];
   }
 
-  async update(id: string, input: Partial<NewComponent>) {
+  async update(id: string, values: Partial<NewComponent>) {
     return this.db
       .update(schema.components)
-      .set(input)
+      .set(values)
       .where(eq(schema.components.id, id))
       .returning();
   }

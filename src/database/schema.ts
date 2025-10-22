@@ -10,6 +10,8 @@ import { sessions } from './entities/session.entity';
 import { sources } from './entities/source.entity';
 import { users } from './entities/user.entity';
 import { verifications } from './entities/verification.entity';
+import { componentTiers } from './enums/component_tier';
+import { userRoles } from './enums/user-role';
 
 export const schema = {
   accounts,
@@ -24,4 +26,6 @@ export const schema = {
   sources,
   users,
   verifications,
+  componentTiers,
+  userRoles,
 };

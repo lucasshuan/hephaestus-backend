@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BrandRepository } from './brand.repository';
-import { NewBrand } from '@/database/entities/brand.entity';
+import { CreateBrandDto } from './dtos/create-brand.dto';
+import { UpdateBrandDto } from './dtos/update-brand.dto';
 
 @Injectable()
 export class BrandService {
@@ -10,11 +11,11 @@ export class BrandService {
     return await this.brandRepository.selectAll();
   }
 
-  async create(input: NewBrand) {
+  async create(input: CreateBrandDto) {
     return await this.brandRepository.insert(input);
   }
 
-  async update(id: string, input: Partial<NewBrand>) {
+  async update(id: string, input: UpdateBrandDto) {
     return await this.brandRepository.update(id, input);
   }
 }

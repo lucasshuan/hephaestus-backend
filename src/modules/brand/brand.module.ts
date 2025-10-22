@@ -8,6 +8,5 @@ import { DatabaseModule } from '@/database/database.module';
   imports: [DatabaseModule],
   providers: [BrandService, BrandRepository],
   controllers: [BrandController],
-  exports: [],
 })
 export class BrandModule {}

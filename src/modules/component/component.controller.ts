@@ -8,12 +8,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ComponentService } from './component.service';
-import { ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { SessionGuard } from '../auth/guards/session.guard';
 import { UpdateComponentDto } from './dtos/update-component.dto';
 import { CreateComponentDto } from './dtos/create-component.dto';
 
-@Controller('component')
+@ApiCookieAuth('session')
+@Controller('components')
 export class ComponentController {
   constructor(private readonly componentService: ComponentService) {}
 

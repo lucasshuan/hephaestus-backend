@@ -1,7 +1,18 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { UserService } from './user.service';
+import { ApiCookieAuth, ApiOperation } from '@nestjs/swagger';
 
-@Controller('source')
+@ApiCookieAuth('session')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @ApiOperation({
+    summary: 'List users',
+    description: 'Get all users.',
+  })
+  @Get()
+  async findAll() {
+    return await this.userService.findAll();
+  }
 }

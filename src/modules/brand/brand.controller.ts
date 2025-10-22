@@ -14,7 +14,7 @@ import { SessionGuard } from '../auth/guards/session.guard';
 import { UpdateBrandDto } from './dtos/update-brand.dto';
 
 @ApiCookieAuth('session')
-@Controller('brand')
+@Controller('brands')
 export class BrandController {
   constructor(private readonly brandService: BrandService) {}
 

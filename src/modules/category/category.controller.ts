@@ -10,10 +10,11 @@ import {
 import { CategoryService } from './category.service';
 import { UpdateCategoryDto } from './dtos/update-category.dto';
 import { CreateCategoryDto } from './dtos/create-category.dto';
-import { ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { SessionGuard } from '../auth/guards/session.guard';
 
-@Controller('category')
+@ApiCookieAuth('session')
+@Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 

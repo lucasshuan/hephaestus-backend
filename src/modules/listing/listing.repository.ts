@@ -8,4 +8,8 @@ export class ListingRepository {
   constructor(
     @InjectDrizzle() private readonly db: NodePgDatabase<typeof schema>,
   ) {}
+
+  async selectAll() {
+    return this.db.select().from(schema.listings);
+  }
 }

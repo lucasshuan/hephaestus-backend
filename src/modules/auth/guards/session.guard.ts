@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from '../auth.service';
 import { Request } from 'express';
 
@@ -16,10 +21,14 @@ export class SessionGuard implements CanActivate {
     const req = ctx.switchToHttp().getRequest<Request>();
 
     const token = this.getSessionCookie(req.cookies);
-    if (!token) return false;
+    if (!token) {
+      throw new UnauthorizedException('Missing session cookie');
+    }
 
     const user = await this.auth.validateSession(token);
-    if (!user) return false;
+    if (!user) {
+      throw new UnauthorizedException('Invalid or expired session');
+    }
 
     req.user = user;
     return true;

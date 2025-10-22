@@ -1,16 +1,26 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { BrandService } from './brand.service';
-import { NewBrand } from '@/database/entities/brand.entity';
 import { CreateBrandDto } from './dtos/create-brand.dto';
-import { ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { SessionGuard } from '../auth/guards/session.guard';
+import { UpdateBrandDto } from './dtos/update-brand.dto';
 
+@ApiCookieAuth('session')
 @Controller('brand')
 export class BrandController {
   constructor(private readonly brandService: BrandService) {}
 
   @ApiOperation({
     summary: 'List brands',
-    description: 'Get all brands',
+    description: 'Get all brands.',
   })
   @Get()
   async findAll() {
@@ -19,20 +29,22 @@ export class BrandController {
 
   @ApiOperation({
     summary: 'Create brand',
-    description: 'Create a new brand',
+    description: 'Create a new brand.',
   })
   @Post()
-  async create(brandDto: CreateBrandDto) {
+  @UseGuards(SessionGuard)
+  async create(@Body() brandDto: CreateBrandDto) {
     return await this.brandService.create(brandDto);
   }
 
   @ApiOperation({
     summary: 'Update brand',
-    description: 'Update a brand by id',
+    description: 'Update a brand by id.',
   })
   @ApiParam({ name: 'id', type: String, description: 'Brand id' })
   @Put(':id')
-  async update(@Param('id') id: string, @Body() brandDto: Partial<NewBrand>) {
+  @UseGuards(SessionGuard)
+  async update(@Param('id') id: string, @Body() brandDto: UpdateBrandDto) {
     return await this.brandService.update(id, brandDto);
   }
 }

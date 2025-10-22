@@ -7,6 +7,7 @@ import { ComponentModule } from './modules/component/component.module';
 import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import Joi from 'joi';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import Joi from 'joi';
         DB_MAX_POOL: Joi.number().default(10),
       }),
     }),
+    AuthModule,
     UserModule,
     BrandModule,
     SourceModule,

@@ -2,7 +2,9 @@ import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { users } from './user.entity';
 
 export const accounts = pgTable('accounts', {
-  id: text('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
   accountId: text('account_id').notNull(),
   providerId: text('provider_id').notNull(),
   userId: text('user_id')

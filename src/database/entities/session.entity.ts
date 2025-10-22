@@ -2,7 +2,9 @@ import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { users } from './user.entity';
 
 export const sessions = pgTable('session', {
-  id: text('id').primaryKey(),
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
   expiresAt: timestamp('expires_at').notNull(),
   token: text('token').notNull().unique(),
   createdAt: timestamp('created_at').defaultNow().notNull(),

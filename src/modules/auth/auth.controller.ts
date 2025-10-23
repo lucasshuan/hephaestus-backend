@@ -75,7 +75,7 @@ export class AuthController {
     });
 
     console.log(process.env.AFTER_LOGIN_REDIRECT_URL);
-    res.status(302).redirect(process.env.AFTER_LOGIN_REDIRECT_URL || '/');
+    res.redirect(process.env.AFTER_LOGIN_REDIRECT_URL || '/');
   }
 
   @ApiCookieAuth('session')

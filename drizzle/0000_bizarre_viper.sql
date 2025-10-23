@@ -16,6 +16,7 @@ CREATE TABLE "accounts" (
 	"updated_at" timestamp NOT NULL
 );
 --> statement-breakpoint
+ALTER TABLE "accounts" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "brands" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" varchar(120) NOT NULL,
@@ -23,6 +24,7 @@ CREATE TABLE "brands" (
 	"updated_at" timestamp NOT NULL
 );
 --> statement-breakpoint
+ALTER TABLE "brands" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "categories" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" varchar(120) NOT NULL,
@@ -31,6 +33,7 @@ CREATE TABLE "categories" (
 	"updated_at" timestamp
 );
 --> statement-breakpoint
+ALTER TABLE "categories" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "component" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" varchar(180) NOT NULL,
@@ -42,12 +45,14 @@ CREATE TABLE "component" (
 	"updated_at" timestamp
 );
 --> statement-breakpoint
+ALTER TABLE "component" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "component_features" (
 	"component_id" text NOT NULL,
 	"feature_id" text NOT NULL,
 	"value_text" text NOT NULL
 );
 --> statement-breakpoint
+ALTER TABLE "component_features" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "features" (
 	"id" text PRIMARY KEY NOT NULL,
 	"category_id" text NOT NULL,
@@ -57,6 +62,7 @@ CREATE TABLE "features" (
 	"updated_at" timestamp
 );
 --> statement-breakpoint
+ALTER TABLE "features" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "listings" (
 	"id" text PRIMARY KEY NOT NULL,
 	"component_id" text NOT NULL,
@@ -68,6 +74,7 @@ CREATE TABLE "listings" (
 	"updated_at" timestamp
 );
 --> statement-breakpoint
+ALTER TABLE "listings" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "listing_prices" (
 	"id" text PRIMARY KEY NOT NULL,
 	"listing_id" text NOT NULL,
@@ -76,6 +83,7 @@ CREATE TABLE "listing_prices" (
 	"updated_at" timestamp
 );
 --> statement-breakpoint
+ALTER TABLE "listing_prices" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "session" (
 	"id" text PRIMARY KEY NOT NULL,
 	"expires_at" timestamp NOT NULL,
@@ -88,6 +96,7 @@ CREATE TABLE "session" (
 	CONSTRAINT "session_token_unique" UNIQUE("token")
 );
 --> statement-breakpoint
+ALTER TABLE "session" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "source" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" varchar(160) NOT NULL,
@@ -97,6 +106,7 @@ CREATE TABLE "source" (
 	"updated_at" timestamp
 );
 --> statement-breakpoint
+ALTER TABLE "source" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "user" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
@@ -109,6 +119,7 @@ CREATE TABLE "user" (
 	CONSTRAINT "user_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
+ALTER TABLE "user" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 CREATE TABLE "verifications" (
 	"id" text PRIMARY KEY NOT NULL,
 	"identifier" text NOT NULL,
@@ -118,6 +129,7 @@ CREATE TABLE "verifications" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
+ALTER TABLE "verifications" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "categories" ADD CONSTRAINT "fk_category_parent" FOREIGN KEY ("parent_category_id") REFERENCES "public"."categories"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "component" ADD CONSTRAINT "fk_component_brand" FOREIGN KEY ("brand_id") REFERENCES "public"."brands"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint

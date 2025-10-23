@@ -70,6 +70,7 @@ export class AuthController {
       secure: true,
       sameSite: 'lax',
       path: '/',
+      domain: process.env.AFTER_LOGIN_REDIRECT_URL ?? undefined,
       maxAge: Math.max(0, Math.floor((expires.getTime() - Date.now()) / 1000)),
     });
 
@@ -97,6 +98,7 @@ export class AuthController {
       sameSite: 'lax',
       secure: true,
       httpOnly: true,
+      domain: process.env.AFTER_LOGIN_REDIRECT_URL ?? undefined,
     });
 
     res.status(200).json({ success: true });

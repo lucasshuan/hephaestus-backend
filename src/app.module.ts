@@ -15,7 +15,7 @@ import { AuthModule } from './modules/auth/auth.module';
       isGlobal: true,
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid('dev', 'tst', 'prd').default('dev'),
-        POSTGRES_URL: Joi.string().uri().required(),
+        DATABASE_URL: Joi.string().uri().required(),
         API_BASE_URL: Joi.string().uri().required(),
         AFTER_LOGIN_REDIRECT_URL: Joi.string().uri().required(),
         GOOGLE_CLIENT_ID: Joi.string().required(),

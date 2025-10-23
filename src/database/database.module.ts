@@ -12,7 +12,7 @@ import { schema } from './schema';
         pg: {
           connection: 'pool',
           config: {
-            connectionString: config.getOrThrow<string>('POSTGRES_URL'),
+            connectionString: config.getOrThrow<string>('DATABASE_URL'),
             ssl: {
               rejectUnauthorized: config.get<boolean>(
                 'DB_SSL_REJECT_UNAUTHORIZED',

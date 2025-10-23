@@ -3,9 +3,19 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
+import {
+  ExpressAdapter,
+  NestExpressApplication,
+} from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const adapter = new ExpressAdapter({
+    rawBody: true,
+  });
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule,
+    adapter,
+  );
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -16,6 +26,7 @@ async function bootstrap() {
     }),
   );
 
+  app.set('trust proxy', 1);
   app.use(cookieParser());
   app.enableCors({
     origin: ['https://hephaestus.felsen.io', 'http://localhost:3000'],

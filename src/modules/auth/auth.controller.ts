@@ -71,7 +71,6 @@ export class AuthController {
       sameSite: 'lax',
       path: '/',
       maxAge: Math.max(0, Math.floor((expires.getTime() - Date.now()) / 1000)),
-      domain: '.hephaestus.felsen.io',
     });
 
     res.redirect(process.env.AFTER_LOGIN_REDIRECT_URL || '/');
@@ -98,7 +97,6 @@ export class AuthController {
       sameSite: 'lax',
       secure: true,
       httpOnly: true,
-      domain: '.hephaestus.felsen.io',
     });
 
     res.status(200).json({ success: true });

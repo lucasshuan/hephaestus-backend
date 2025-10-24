@@ -3,19 +3,12 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
-import {
-  ExpressAdapter,
-  NestExpressApplication,
-} from '@nestjs/platform-express';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const adapter = new ExpressAdapter({
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     rawBody: true,
   });
-  const app = await NestFactory.create<NestExpressApplication>(
-    AppModule,
-    adapter,
-  );
 
   app.useGlobalPipes(
     new ValidationPipe({

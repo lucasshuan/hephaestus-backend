@@ -43,14 +43,6 @@ export class AuthController {
     };
   }
 
-  @Get('debug/cookies')
-  getCookies(@Req() req: Request) {
-    return {
-      headersCookie: req.headers.cookie ?? null,
-      parsed: req.cookies ?? null,
-    };
-  }
-
   @ApiCookieAuth('session')
   @ApiOperation({
     summary: 'Current user',

@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Header,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import type { GoogleOAuthUser } from './types/google-oauth-user';
 import { SessionGuard } from './guards/session.guard';
@@ -48,6 +56,7 @@ export class AuthController {
     summary: 'Current user',
     description: 'Get current logged in user.',
   })
+  @Header('Cache-Control', 'no-store')
   @Get('me')
   @UseGuards(SessionGuard)
   me(@Req() req: Request) {

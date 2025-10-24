@@ -26,7 +26,7 @@ async function bootstrap() {
     credentials: true,
   });
 
-  if (process.env.NODE_ENV === 'dev') {
+  if (process.env.NODE_ENV === 'local') {
     const config = new DocumentBuilder()
       .setTitle('Hephaestus API')
       .setDescription('Hardware listings')

@@ -4,7 +4,7 @@ import type { GoogleOAuthUser } from './types/google-oauth-user';
 import { SessionGuard } from './guards/session.guard';
 import { ApiCookieAuth, ApiOperation } from '@nestjs/swagger';
 import { GoogleAuthGuard } from './guards/google.guard';
-import type { Request, Response } from 'express';
+import type { CookieOptions, Request, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
@@ -22,6 +22,17 @@ export class AuthController {
       typeof o.providerAccountId === 'string' &&
       typeof o.email === 'string'
     );
+  }
+
+  private getSessionCookie(): CookieOptions {
+    const isProd = this.config.get<string>('NODE_ENV') === 'production';
+    return {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax',
+      path: '/',
+      domain: isProd ? this.config.get<string>('COOKIE_DOMAIN') : undefined,
+    };
   }
 
   @Get('debug/cookies')
@@ -78,10 +89,7 @@ export class AuthController {
     });
 
     res.cookie('session', token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      path: '/',
+      ...this.getSessionCookie(),
       expires,
     });
 
@@ -104,12 +112,7 @@ export class AuthController {
       await this.auth.revokeSession(token);
     }
 
-    res.clearCookie('session', {
-      path: '/',
-      sameSite: 'none',
-      secure: true,
-      httpOnly: true,
-    });
+    res.clearCookie('session', this.getSessionCookie());
 
     res.status(200).json({ success: true });
   }

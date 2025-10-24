@@ -24,6 +24,14 @@ export class AuthController {
     );
   }
 
+  @Get('debug/cookies')
+  getCookies(@Req() req: Request) {
+    return {
+      headersCookie: req.headers.cookie ?? null,
+      parsed: req.cookies ?? null,
+    };
+  }
+
   @ApiCookieAuth('session')
   @ApiOperation({
     summary: 'Current user',
@@ -75,7 +83,6 @@ export class AuthController {
       sameSite: 'none',
       path: '/',
       expires,
-      domain: this.config.get<string>('COOKIE_DOMAIN') || '.felsen.io',
     });
 
     res.redirect(process.env.AFTER_LOGIN_REDIRECT_URL || '/');
@@ -102,7 +109,6 @@ export class AuthController {
       sameSite: 'none',
       secure: true,
       httpOnly: true,
-      domain: this.config.get<string>('COOKIE_DOMAIN') || '.felsen.io',
     });
 
     res.status(200).json({ success: true });

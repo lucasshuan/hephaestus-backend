@@ -9,7 +9,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { categories } from './category.entity';
 import { brands } from './brand.entity';
-import { ComponentTier, componentTiers } from '../enums/component_tier';
+import { ComponentTier, componentTiers } from '../enums/component-tier';
 
 export const components = pgTable(
   'component',

@@ -1,4 +1,4 @@
-import { ComponentTier } from '@/database/enums/component_tier';
+import { ComponentTier } from '@/database/enums/component-tier';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsString, IsUUID } from 'class-validator';
 

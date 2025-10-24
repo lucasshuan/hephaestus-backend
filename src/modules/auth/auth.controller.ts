@@ -5,10 +5,14 @@ import { SessionGuard } from './guards/session.guard';
 import { ApiCookieAuth, ApiOperation } from '@nestjs/swagger';
 import { GoogleAuthGuard } from './guards/google.guard';
 import type { Request, Response } from 'express';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly auth: AuthService) {}
+  constructor(
+    private readonly auth: AuthService,
+    private readonly config: ConfigService,
+  ) {}
 
   private isGoogleOAuthUser(u: unknown): u is GoogleOAuthUser {
     if (!u || typeof u !== 'object') return false;
@@ -68,9 +72,10 @@ export class AuthController {
     res.cookie('session', token, {
       httpOnly: true,
       secure: true,
-      sameSite: 'lax',
+      sameSite: 'none',
       path: '/',
-      maxAge: Math.max(0, Math.floor((expires.getTime() - Date.now()) / 1000)),
+      expires,
+      domain: this.config.get<string>('COOKIE_DOMAIN') || '.felsen.io',
     });
 
     res.redirect(process.env.AFTER_LOGIN_REDIRECT_URL || '/');
@@ -94,9 +99,10 @@ export class AuthController {
 
     res.clearCookie('session', {
       path: '/',
-      sameSite: 'lax',
+      sameSite: 'none',
       secure: true,
       httpOnly: true,
+      domain: this.config.get<string>('COOKIE_DOMAIN') || '.felsen.io',
     });
 
     res.status(200).json({ success: true });

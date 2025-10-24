@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import Joi from 'joi';
 import { AuthModule } from './modules/auth/auth.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { AuthModule } from './modules/auth/auth.module';
     ComponentModule,
     UserModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}

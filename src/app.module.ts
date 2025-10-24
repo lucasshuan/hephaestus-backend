@@ -15,7 +15,9 @@ import { AppController } from './app.controller';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        NODE_ENV: Joi.string().valid('dev', 'tst', 'prd').default('dev'),
+        NODE_ENV: Joi.string()
+          .valid('local', 'development', 'production')
+          .default('local'),
         DATABASE_URL: Joi.string().uri().required(),
         API_BASE_URL: Joi.string().uri().required(),
         AFTER_LOGIN_REDIRECT_URL: Joi.string().uri().required(),
